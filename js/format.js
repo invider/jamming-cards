@@ -1,6 +1,8 @@
 const fs = require('fs')
 const PDFDocument = require("pdfkit")
 
+const SIZE = 15
+
 function createDocument(cg) {
 
     const doc = new PDFDocument({
@@ -36,8 +38,23 @@ function setup(cg) {
 
     doc
         .font('main')
-        .fontSize(16)
+        .fontSize(SIZE)
         .fillColor('#101012')
+
+    let page = 1
+    function printTitle(title) {
+        doc
+            .font('main')
+            .fontSize(20)
+            .text(title, { 
+                align: 'right',
+            })
+            .fontSize(SIZE)
+    }
+
+    doc.on('pageAdded',
+        () => printTitle("Jamming Card " + (++page)))
+    printTitle("Jamming Card " + page)
 
     return doc
 }
@@ -63,11 +80,16 @@ module.exports = function(md, cg) {
     function text(txt) {
         doc.text(txt, {
             continued: true,
+            lineGap: 0,
+            indent: 8,
+            paragraphGap: 4,
         })
     }
 
     function p() {
-        doc.text('\n')
+        doc.text('\n\n', {
+            continued: true,
+        })
     }
 
     function span(sp) {
@@ -77,8 +99,10 @@ module.exports = function(md, cg) {
             case 'text': text(sp.val); break;
             case 'p': p(); break;
             case '.nl': break;
-            case 'bold': fontSize(24); break;
-            case '.bold': fontSize(16); break;
+            case 'bold': font('bold'); break;
+            case '.bold': font('main'); break;
+            case 'italic': font('italic'); break;
+            case '.italic': font('main'); break;
             default:
                 text(md.dump(sp))
         }
@@ -88,7 +112,6 @@ module.exports = function(md, cg) {
         doc.end()
     }
 
-    text('hi\n\n')
     let sp
     while (sp = md.next()) {
         span(sp)

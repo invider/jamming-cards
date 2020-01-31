@@ -49,11 +49,10 @@ function parser(md) {
     let lastSpan = {}
     let lineSpan = 0
 
-    function next() {
+    function doNext() {
 
         let span = nextSpan()
         if (!span) return
-        lastSpan = span
 
         if (span.type === '.nl') { 
             lineSpan = 0
@@ -94,6 +93,12 @@ function parser(md) {
             }
         }
 
+        return span
+    }
+
+    function next() {
+        const span = doNext()
+        lastSpan = span
         return span
     }
 
