@@ -1,0 +1,22 @@
+{
+  "name": "jamming-cards",
+  "version": "1.0.0",
+  "description": "collider.jam reference cards generator",
+  "main": "framer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/invider/jamming-cards.git"
+  },
+  "author": "Igor Khotin",
+  "license": "zlib",
+  "bugs": {
+    "url": "https://github.com/invider/jamming-cards/issues"
+  },
+  "homepage": "https://github.com/invider/jamming-cards#readme",
+  "dependencies": {
+    "pdfkit": "latest"
+  }
+}
