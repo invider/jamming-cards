@@ -1,0 +1,29 @@
+#!/bin/sh
+
+URL=http://localhost:9999/help/card
+
+./clean
+
+# check help data
+HELP_FLAG=`curl -s -I $URL | grep HTTP | awk '{print $2}'`
+HELP_FLAG=${HELP_FLAG:-000}
+
+if [ $HELP_FLAG = "200" ]; then
+    echo "Loading jam-card data from $URL..."
+    curl -s $URL > card.md
+
+else
+    echo "Can't load help data from: $URL"
+    if [ $HELP_FLAG = "000" ]; then
+        echo "No response from the server!"
+    else
+        echo "Got HTTP Error #$HELP_FLAG from the server!"
+    fi
+    echo ""
+    echo "Make sure that jam is running in debug mode"
+    echo "And http://localhost:9999 is updated in browser"
+    exit 1
+fi
+
+./gen
+
