@@ -36,6 +36,17 @@ function parser(md) {
             case '_': return mark('_')
         }
 
+        if (c === '<') {
+            let tag = c
+            while(c && !isNewLine(c) && c !== '>') {
+                c = getc()
+                tag += c
+            }
+            return nextSpan()
+        } else if (c === '>') {
+            c = getc()
+        }
+
         let span = ''
         while(c && !isNewLine(c) && !isSpecial(c)) {
             span += c

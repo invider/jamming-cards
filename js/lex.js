@@ -41,6 +41,7 @@ module.exports = function(md) {
     function isSpecial(c) {
         switch(c) {
             case '*': case '_':
+            case '<': case '>':
                 return true
 
             default:
